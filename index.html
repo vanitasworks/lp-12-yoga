@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ma yoga | 静かなヨガスタジオ</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage: #8fae9e;
+      --sage-light: #c4d9ce;
+      --sage-pale: #f0f5f2;
+      --stone: #e8e4de;
+      --linen: #faf8f5;
+      --ink: #2c2c28;
+      --muted: #9a9890;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Hiragino Mincho ProN', 'Yu Mincho', Georgia, serif;
+      background: var(--linen);
+      color: var(--ink);
+      line-height: 2;
+    }
+
+    /* ===== NAV: ULTRA MINIMAL ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 28px 60px;
+      display: flex; justify-content: space-between; align-items: center;
+      mix-blend-mode: normal;
+    }
+    .nav-logo {
+      font-size: 1rem; font-weight: 300; letter-spacing: 0.5em;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav-reserve {
+      font-size: 0.7rem; letter-spacing: 0.35em;
+      color: var(--muted); text-decoration: none;
+      padding-bottom: 2px; border-bottom: 1px solid var(--muted);
+      transition: color 0.4s, border-color 0.4s;
+    }
+    .nav-reserve:hover { color: var(--sage); border-color: var(--sage); }
+
+    /* ===== HERO: ASYMMETRIC MINIMAL ===== */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 55% 45%;
+    }
+    .hero-left {
+      background: var(--sage-pale);
+      display: flex; align-items: flex-end;
+      padding: 160px 80px 100px;
+      position: relative;
+    }
+    .hero-circle {
+      position: absolute; top: 15%; right: -80px;
+      width: 320px; height: 320px; border-radius: 50%;
+      border: 1px solid var(--sage-light);
+      z-index: 0;
+    }
+    .hero-text { position: relative; z-index: 1; }
+    .hero-jp {
+      font-size: 0.68rem; letter-spacing: 0.5em; color: var(--sage);
+      display: block; margin-bottom: 40px;
+    }
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 200; line-height: 1.4;
+      letter-spacing: 0.1em; margin-bottom: 48px;
+    }
+    h1 em { font-style: normal; color: var(--sage); }
+    .hero-sub {
+      font-size: 0.85rem; color: var(--muted); line-height: 2.2;
+      max-width: 340px;
+    }
+
+    .hero-right {
+      display: grid; grid-template-rows: 2fr 1fr;
+    }
+    .hero-img {
+      background: var(--stone);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8rem; color: var(--sage);
+    }
+    .hero-stat {
+      background: var(--sage);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 4px;
+    }
+    .stat-num { font-size: 3rem; font-weight: 200; color: white; letter-spacing: -0.02em; line-height: 1; }
+    .stat-label { font-size: 0.65rem; letter-spacing: 0.35em; color: rgba(255,255,255,0.65); }
+
+    /* ===== PHILOSOPHY: CENTERED MINIMAL ===== */
+    .philosophy {
+      padding: 160px 60px;
+      text-align: center;
+      max-width: 680px; margin: 0 auto;
+    }
+    .thin-line {
+      width: 1px; height: 64px; background: var(--sage-light);
+      margin: 0 auto 48px;
+    }
+    .philosophy h2 {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 200; line-height: 1.8; margin-bottom: 48px;
+      letter-spacing: 0.1em;
+    }
+    .philosophy p {
+      font-size: 0.88rem; color: var(--muted); line-height: 2.6;
+    }
+
+    /* ===== CLASSES: SIDE-BY-SIDE CARDS ===== */
+    .classes { background: var(--stone); padding: 120px 60px; }
+    .classes-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 80px;
+    }
+    .classes-header h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 300; letter-spacing: 0.1em; }
+    .classes-header a { font-size: 0.7rem; letter-spacing: 0.3em; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--muted); padding-bottom: 2px; }
+
+    .class-list { display: flex; flex-direction: column; gap: 2px; }
+    .class-item {
+      display: grid; grid-template-columns: 80px 1fr 1fr auto;
+      align-items: center; gap: 40px;
+      background: var(--linen); padding: 36px 48px;
+      transition: background 0.4s;
+      cursor: pointer;
+    }
+    .class-item:hover { background: var(--sage); color: white; }
+    .class-item:hover .class-time,
+    .class-item:hover .class-level { color: rgba(255,255,255,0.6); }
+    .class-num { font-size: 0.65rem; letter-spacing: 0.3em; color: var(--muted); }
+    .class-item:hover .class-num { color: rgba(255,255,255,0.5); }
+    .class-name { font-size: 1.05rem; font-weight: 400; letter-spacing: 0.05em; }
+    .class-time { font-size: 0.82rem; color: var(--muted); }
+    .class-level { font-size: 0.72rem; letter-spacing: 0.2em; color: var(--muted); text-align: right; }
+
+    /* ===== SCHEDULE: WEEKLY TABLE ===== */
+    .schedule { padding: 120px 60px; }
+    .schedule h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 300; letter-spacing: 0.1em; margin-bottom: 64px; }
+    .schedule-table { width: 100%; border-collapse: collapse; }
+    .schedule-table th {
+      font-size: 0.7rem; letter-spacing: 0.25em; color: var(--muted);
+      font-weight: 400; padding: 0 0 20px; text-align: center;
+      border-bottom: 1px solid var(--sage-light);
+    }
+    .schedule-table td {
+      padding: 16px 8px; text-align: center; border-bottom: 1px solid #e8e4de;
+      font-size: 0.78rem;
+    }
+    .class-tag {
+      display: inline-block; padding: 4px 12px;
+      background: var(--sage-pale); border-radius: 40px;
+      font-size: 0.68rem; letter-spacing: 0.1em; color: var(--sage);
+    }
+    .class-tag.full { background: #f0ece8; color: var(--muted); text-decoration: line-through; }
+
+    /* ===== INSTRUCTOR ===== */
+    .instructor { padding: 120px 60px; background: var(--ink); color: var(--linen); }
+    .instructor-inner { display: grid; grid-template-columns: 1fr 1.5fr; gap: 100px; align-items: center; max-width: 900px; margin: 0 auto; }
+    .instructor-photo {
+      aspect-ratio: 3/4; background: #3c3c38;
+      display: flex; align-items: center; justify-content: center; font-size: 6rem;
+    }
+    .instructor-en { font-size: 0.65rem; letter-spacing: 0.4em; color: var(--sage); display: block; margin-bottom: 12px; }
+    .instructor-name { font-size: 2rem; font-weight: 200; margin-bottom: 4px; letter-spacing: 0.2em; }
+    .instructor-kana { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.3em; margin-bottom: 40px; }
+    .instructor-bio { font-size: 0.85rem; color: rgba(250,248,245,0.6); line-height: 2.4; }
+
+    /* ===== PRICE: CLEAN TABLE ===== */
+    .price { padding: 120px 60px; }
+    .price h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 300; letter-spacing: 0.1em; margin-bottom: 80px; }
+    .price-table { width: 100%; max-width: 800px; border-collapse: collapse; }
+    .price-table tr { border-bottom: 1px solid var(--stone); }
+    .price-table th { text-align: left; padding: 24px 0; font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); font-weight: 400; }
+    .price-table td { padding: 24px 0; font-size: 0.95rem; }
+    .price-table .amount { font-size: 1.2rem; font-weight: 300; text-align: right; }
+    .price-note { font-size: 0.75rem; color: var(--muted); margin-top: 32px; line-height: 2; }
+
+    /* ===== CTA: SIMPLE ===== */
+    .cta {
+      padding: 160px 60px; background: var(--sage-pale); text-align: center;
+    }
+    .cta h2 { font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 200; letter-spacing: 0.1em; margin-bottom: 24px; }
+    .cta p { color: var(--muted); font-size: 0.85rem; margin-bottom: 64px; }
+    .btn-sage {
+      display: inline-block; padding: 18px 56px;
+      border: 1px solid var(--ink); color: var(--ink);
+      text-decoration: none; font-size: 0.72rem; letter-spacing: 0.4em;
+      transition: all 0.4s;
+    }
+    .btn-sage:hover { background: var(--sage); border-color: var(--sage); color: white; }
+
+    footer {
+      padding: 48px 60px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--stone);
+      font-size: 0.7rem; color: var(--muted); letter-spacing: 0.2em;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 100px 24px 60px; }
+      .hero-right { display: none; }
+      .philosophy { padding: 100px 24px; }
+      .classes, .schedule, .instructor, .price, .cta { padding: 80px 24px; }
+      .classes-header { flex-direction: column; gap: 16px; }
+      .class-item { grid-template-columns: 1fr; gap: 8px; padding: 24px; }
+      .instructor-inner { grid-template-columns: 1fr; gap: 48px; }
+      .instructor-photo { max-width: 240px; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo">ma</a>
+    <a href="#cta" class="nav-reserve">体験を予約する</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-circle"></div>
+      <div class="hero-text">
+        <span class="hero-jp">静 / ヨガスタジオ / 目黒</span>
+        <h1>呼吸と共に、<br><em>ととのう</em>。</h1>
+        <p class="hero-sub">騒がしい日常から離れ、<br>ただ自分と向き合う時間を。<br>少人数制・完全予約の静かなスタジオ。</p>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-img">🧘</div>
+      <div class="hero-stat">
+        <div class="stat-num">8</div>
+        <div class="stat-label">PERSON MAX</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="philosophy">
+    <div class="thin-line"></div>
+    <h2>「間（ま）」という名前のように、<br>余白を大切にするスタジオ</h2>
+    <p>
+      大人数のクラスでは得られない、<br>
+      先生との距離の近さと、静寂の中での集中。<br>
+      ここは、ヨガを通じて「自分に戻る」場所です。<br><br>
+      初めての方から経験者まで、<br>
+      それぞれのペースで無理なく続けられます。
+    </p>
+  </section>
+
+  <section class="classes">
+    <div class="classes-header">
+      <h2>クラス</h2>
+      <a href="#">すべて見る</a>
+    </div>
+    <div class="class-list">
+      <div class="class-item">
+        <span class="class-num">01</span>
+        <div class="class-name">朝のハタヨガ</div>
+        <div class="class-time">月・水・金  7:00 – 8:00</div>
+        <div class="class-level">ALL LEVEL</div>
+      </div>
+      <div class="class-item">
+        <span class="class-num">02</span>
+        <div class="class-name">リストラティブヨガ</div>
+        <div class="class-time">火・木  19:30 – 20:30</div>
+        <div class="class-level">BEGINNER</div>
+      </div>
+      <div class="class-item">
+        <span class="class-num">03</span>
+        <div class="class-name">陰ヨガ＋瞑想</div>
+        <div class="class-time">土  10:00 – 11:30</div>
+        <div class="class-level">INTERMEDIATE</div>
+      </div>
+      <div class="class-item">
+        <span class="class-num">04</span>
+        <div class="class-name">プライベートレッスン</div>
+        <div class="class-time">要予約 / 60〜90分</div>
+        <div class="class-level">ALL LEVEL</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="schedule">
+    <h2>今週のスケジュール</h2>
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>TIME</th>
+          <th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th><th>日</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>7:00</td>
+          <td><span class="class-tag">ハタ</span></td>
+          <td>—</td>
+          <td><span class="class-tag">ハタ</span></td>
+          <td>—</td>
+          <td><span class="class-tag full">満席</span></td>
+          <td>—</td><td>—</td>
+        </tr>
+        <tr>
+          <td>19:30</td>
+          <td>—</td>
+          <td><span class="class-tag">陰</span></td>
+          <td>—</td>
+          <td><span class="class-tag">陰</span></td>
+          <td>—</td><td>—</td><td>—</td>
+        </tr>
+        <tr>
+          <td>10:00</td>
+          <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+          <td><span class="class-tag">陰+瞑想</span></td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="instructor">
+    <div class="instructor-inner">
+      <div class="instructor-photo">🧘‍♀️</div>
+      <div>
+        <span class="instructor-en">INSTRUCTOR</span>
+        <div class="instructor-name">森山 かなえ</div>
+        <div class="instructor-kana">KANAE MORIYAMA</div>
+        <p class="instructor-bio">
+          インドのリシケシュでRYT500を取得後、帰国。<br>
+          「ヨガはポーズではなく、呼吸」という考えのもと、<br>
+          一人ひとりの体の状態を見ながら丁寧に指導します。<br><br>
+          陰ヨガ・リストラティブヨガ・マインドフルネス瞑想を専門とし、<br>
+          特に「休むヨガ」の普及に力を入れています。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="price">
+    <h2>料金</h2>
+    <table class="price-table">
+      <tr><th>体験レッスン</th><td>初回1回限り</td><td class="amount">¥1,500</td></tr>
+      <tr><th>1回チケット</th><td>有効期限なし</td><td class="amount">¥3,300</td></tr>
+      <tr><th>5回チケット</th><td>3ヶ月有効</td><td class="amount">¥14,300</td></tr>
+      <tr><th>月4回会員</th><td>月額・自動更新</td><td class="amount">¥9,900</td></tr>
+      <tr><th>月8回会員</th><td>月額・自動更新</td><td class="amount">¥17,600</td></tr>
+      <tr><th>プライベート</th><td>60分 / 完全マンツーマン</td><td class="amount">¥11,000</td></tr>
+    </table>
+    <p class="price-note">※ すべて税込価格です。<br>※ 月額会員はいつでも退会可能です（翌月分から適用）。</p>
+  </section>
+
+  <section class="cta" id="cta">
+    <h2>まずは体験から</h2>
+    <p>はじめての方、体が硬い方、大歓迎です。<br>体験レッスンは ¥1,500 でご参加いただけます。</p>
+    <a href="#" class="btn-sage">体験レッスンを予約する</a>
+  </section>
+
+  <footer>
+    <span>© 2024 ma yoga studio</span>
+    <span>目黒区 / 東急目黒線 不動前駅 徒歩3分</span>
+  </footer>
+
+</body>
+</html>
